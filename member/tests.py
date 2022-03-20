@@ -32,3 +32,24 @@ def test_new_member():
     member.save()
 
     assert member.username == "ed"
+
+
+SPEAKER_ROLE_NAME = "speaker"
+SPEAKER_ROLE_DESC = "Gives a lecture"
+
+
+@pytest.fixture
+def role0():
+    return models.Role(name=SPEAKER_ROLE_NAME, description=SPEAKER_ROLE_DESC)
+
+
+class TestRoleModel:
+    def test_new_role(self, role0):
+        assert role0.name == SPEAKER_ROLE_NAME
+        assert role0.description == SPEAKER_ROLE_DESC
+
+    @pytest.mark.django_db()
+    def test_persist_role(self, role0):
+        role0.save()
+
+        assert role0 in models.Role.objects.all()
